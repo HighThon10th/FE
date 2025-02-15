@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 function Finishing() {
     const [ischeck, setIscheck] = useState(false)
-    const [isimgset, setIsimgset] = useState(false)
     const [isimginput, setIsimginput] = useState(false)
     const [imgsrc, setImgsrc] = useState(null)
 
@@ -40,12 +39,10 @@ function Finishing() {
         <Container>
             <Header/>
             <Box_Image inputimg= {imgsrc}>
+                <Button_Container>
+                    <Button_Button onClick={setImg}>썸네일 설정하기</Button_Button>
+                </Button_Container>
                 {
-                    !isimgset&&<Button_Container>
-                                    <Button_Button onClick={setImg}>썸네일 설정하기</Button_Button>
-                                </Button_Container>
-
-                }{
                     isimginput&&<input
                         type='file'
                         onChange={(e)=>setImgsrc(e.target.value)}
