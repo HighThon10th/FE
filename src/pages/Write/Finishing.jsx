@@ -1,42 +1,99 @@
 import styled from "@emotion/styled"
 import Header from "../../components/header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Finishing() {
     const [ischeck, setIscheck] = useState(false)
+    const [isimgset, setIsimgset] = useState(false)
+    const [isimginput, setIsimginput] = useState(false)
+    const [imgsrc, setImgsrc] = useState(null)
+
+    const [input, setInput] = useState({
+        title: "",
+        content: "",
+        amount: null,
+        date: null,
+        category: ""
+    })
 
     const onClickIsclick = () => {
         setIscheck(!ischeck)
     }
 
+    const setImg = () => {
+        setIsimginput(true)
+    }
+
+    const onChangeInput = (e) => {
+        setInput({
+            ...input,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    useEffect(()=>{
+        console.log(imgsrc)
+        setIsimginput(false)
+    },[imgsrc])
+
     return (
         <Container>
             <Header/>
-            <Box_Image>
+            <Box_Image inputimg= {imgsrc}>
+                {
+                    !isimgset&&<Button_Container>
+                                    <Button_Button onClick={setImg}>썸네일 설정하기</Button_Button>
+                                </Button_Container>
 
+                }{
+                    isimginput&&<input
+                        type='file'
+                        onChange={(e)=>setImgsrc(e.target.value)}
+                    />
+                }
             </Box_Image>
 
             <InputTitle_Container>
-                <InputTitle_Input placeholder="제목을 작성해주세요"/>
+                <InputTitle_Input
+                    placeholder="제목을 작성해주세요"
+                    name="title"
+                    onChange={(e)=>onChangeInput(e)}
+                />
             </InputTitle_Container>
 
             <InputContent_Container>
-                <InputContent_Input placeholder="설명글을 작성해주세요"/>
+                <InputContent_Input
+                    placeholder="설명글을 작성해주세요"
+                    name="content"
+                    onChange={(e)=>onChangeInput(e)}
+                />
             </InputContent_Container>
 
             <Box01>
                 <MiniInput_Container>
-                    <MiniInput_Input placeholder="금액을 측정해주세요"/>
+                    <MiniInput_Input
+                        placeholder="금액을 측정해주세요"
+                        name="amount"
+                        onChange={(e)=>onChangeInput(e)}
+                    />
                 </MiniInput_Container>
                 <Txt01>만원</Txt01>
                 <MiniInput_Container>
-                    <MiniInput_Input placeholder="펀딩기간을 설정해주세요"/>
+                    <MiniInput_Input
+                        placeholder="펀딩기간을 설정해주세요"
+                        name="date"
+                        onChange={(e)=>onChangeInput(e)}
+                    />
                 </MiniInput_Container>
             </Box01>
                 
             <Box01>
                 <MiniInput_Container>
-                    <MiniInput_Input placeholder="펀딩기간을 설정해주세요"/>
+                    <MiniInput_Input
+                        placeholder="카테고리를 선택해주세요"
+                        name="category"
+                        onChange={(e)=>onChangeInput(e)}
+                    />
                 </MiniInput_Container>
 
                 <Box_Flexed>
@@ -46,9 +103,9 @@ function Finishing() {
                     </Check_Box_Container>
                 </Box_Flexed>
             </Box01>
-            <Funding_Button_Container>
-                <Funding_Button>펀딩 시작하기</Funding_Button>
-            </Funding_Button_Container>
+            <Button_Container>
+                <Button_Button>펀딩 시작하기</Button_Button>
+            </Button_Container>
         </Container>
     )
 }
@@ -76,6 +133,8 @@ const Box_Image = styled.div`
     outline: 2px solid;
     border: 1px solid "#666666";
     border-radius: 3px;
+
+    background: url(inputimg);
 `
 
 const InputTitle_Container = styled.div`
@@ -186,7 +245,7 @@ const Check_Box_Button = styled.button`
     background-color: ${({ ischeck }) => ( ischeck?"#AA60C8":"#FFFFFF" )};
 `
 
-const Funding_Button_Container = styled.div`
+const Button_Container = styled.div`
     width: 430px;
     height: 60px;
     margin-top: 40px;
@@ -199,7 +258,7 @@ const Funding_Button_Container = styled.div`
     outline-color: #AA60C8;
     background-color: #AA60C8;
 `
-const Funding_Button = styled.button`
+const Button_Button = styled.button`
     width: 96%;
     height: 100%;
     font-size: 30px;
