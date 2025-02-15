@@ -1,17 +1,29 @@
 import styled from '@emotion/styled';
+import * as DOMPurify from 'isomorphic-dompurify';
+import PropTypes from 'prop-types';
 
-const DetailContent = () => {
-	return <DetailContent_Container></DetailContent_Container>;
+const DetailContent = ({ Content }) => {
+	return (
+		<DetailContent_Container>
+			<div
+				dangerouslySetInnerHTML={{
+					__html: DOMPurify.sanitize(Content ? Content : ''),
+				}}
+			></div>
+		</DetailContent_Container>
+	);
+};
+
+DetailContent.propTypes = {
+	Content: PropTypes.node.isRequired,
 };
 
 const DetailContent_Container = styled.div`
   width: 100%;
   min-height: 1000px;
-  background-color: red;
   display: flex;
   flex-direction: column;
   justify-content: start;
-  align-items: center;
   margin-top: 35px;
 `;
 

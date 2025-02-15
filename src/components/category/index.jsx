@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import Test from '../../assets/test.jpg';
+import PropTypes from 'prop-types';
 
-const Category = () => {
+const Category = ({ imgUrl, Text }) => {
 	return (
 		<Category_Container>
-			<Category_Img src={Test} />
-			<Category_Text>에스파</Category_Text>
+			<Category_Img src={imgUrl} />
+			<Category_Text>{Text}</Category_Text>
 		</Category_Container>
 	);
 };
@@ -27,5 +27,9 @@ const Category_Img = styled.img`
 const Category_Text = styled.div`
   font-size: 16px;
 `;
+Category.propTypes = {
+	imgUrl: PropTypes.string.isRequired,
+	Text: PropTypes.string.isRequired,
+};
 
 export default Category;

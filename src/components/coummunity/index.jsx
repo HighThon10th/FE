@@ -1,41 +1,86 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const Coummunity = () => {
+const Coummunity = ({ Data }) => {
+	const [comment, setComment] = useState('');
+	const params = new useParams();
+
+	const onSubmit = async () => {
+		console.log('clicked');
+		try {
+			await axios
+				.post(
+					`https://back.highthon10.kro.kr/community/${params.id}`,
+					{
+						content: comment,
+					},
+					{
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+						},
+					}
+				)
+				.then(() => {
+					window.location.reload();
+				});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<Coummunity_Container>
-			<Coummunity_Title placeholder='댓글을 작성하세요.' />
-			<Coummunity_ButtonLayout>
+			<Coummunity_Title
+				placeholder='댓글을 작성하세요.'
+				onChange={(e) => {
+					setComment(e.currentTarget.value);
+				}}
+			/>
+			<Coummunity_ButtonLayout
+				onClick={() => {
+					onSubmit();
+				}}
+			>
 				<Coummunity_Button>댓글 작성</Coummunity_Button>
 			</Coummunity_ButtonLayout>
 
 			<Coummunity_Contents>
-				<Coummunity_Content>
-					<Content_Info>
-						<Content_Name>이름이름이름</Content_Name>
-						<Content_Tag_Seller>판매자</Content_Tag_Seller>
-					</Content_Info>
+				{Data.map((item) => {
+					return (
+						<Coummunity_Content key={item?.noticeId}>
+							<Content_Info>
+								<Content_Name>{item?.authorName}</Content_Name>
+								{item?.type === 'CREATOR' ? (
+									<Content_Tag_Seller>판매자</Content_Tag_Seller>
+								) : (
+									''
+								)}
+								{item?.type === 'SUPPORTER' ? (
+									<Content_Tag_Buyer>구매자</Content_Tag_Buyer>
+								) : (
+									''
+								)}
+							</Content_Info>
 
-					<Content_Date>2025.02.16</Content_Date>
+							<Content_Date>{item?.createTime}</Content_Date>
 
-					<Content_Title>이 펀딩 진짜 추천해요!!</Content_Title>
+							<Content_Title>{item?.content}</Content_Title>
 
-					<Content_Provider />
-				</Coummunity_Content>
-				<Coummunity_Content>
-					<Content_Info>
-						<Content_Name>이름이름이름</Content_Name>
-						<Content_Tag_Buyer>구매자</Content_Tag_Buyer>
-					</Content_Info>
-
-					<Content_Date>2025.02.16</Content_Date>
-
-					<Content_Title>이 펀딩 진짜 추천해요!!</Content_Title>
-
-					<Content_Provider />
-				</Coummunity_Content>
+							<Content_Provider />
+						</Coummunity_Content>
+					);
+				})}
 			</Coummunity_Contents>
 		</Coummunity_Container>
 	);
+};
+
+Coummunity.propTypes = {
+	Data: PropTypes.node.isRequired,
 };
 
 const Coummunity_Container = styled.div`

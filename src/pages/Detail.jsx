@@ -1,26 +1,92 @@
 import styled from '@emotion/styled';
 import Header from '../components/header';
-import Pic from '../assets/806X432.jpg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DetailContent from '../components/detail';
 import Announcement from '../components/announcement';
 import Coummunity from '../components/coummunity';
 import HurtIcon from '../assets/icon/HurtIcon';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const Detail = () => {
 	const [selectedOption, setSelectedOption] = useState('상세정보');
-	const [like, setLike] = useState(false);
+	const [detailData, setDetailData] = useState(null);
+	const [announcementData, setAnnouncementData] = useState(null);
+	const [communityData, setCommunityData] = useState(null);
+	const params = new useParams();
 
 	const handleSelect = (option) => {
 		setSelectedOption(option);
 	};
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				await axios
+					.get(`https://back.highthon10.kro.kr/funding/${params.id}`, {
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+						},
+					})
+					.then((res) => {
+						setDetailData(res.data);
+					});
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		fetchData();
+	}, [params.id]);
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				await axios
+					.get(`https://back.highthon10.kro.kr/notice/${params.id}`, {
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+						},
+					})
+					.then((res) => {
+						setAnnouncementData(res.data);
+					});
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		fetchData();
+	}, [params.id]);
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				await axios
+					.get(`https://back.highthon10.kro.kr/community/${params.id}`, {
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+						},
+					})
+					.then((res) => {
+						setCommunityData(res.data);
+					});
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		fetchData();
+	}, [params.id]);
+
+	const [like, setLike] = useState(detailData?.isLiked);
 
 	return (
 		<Detail_Container>
 			<Header />
 			<Detail_Layout>
 				<Detail_Left>
-					<Left_Img src={Pic} alt='detail' />
+					<Left_Img src={detailData?.thumbnailUrl} alt='detail' />
 
 					<Left_Selecter>
 						<Selecter_Option
@@ -43,38 +109,35 @@ const Detail = () => {
 						</Selecter_Option>
 					</Left_Selecter>
 
-					{selectedOption === '상세정보' && <DetailContent />}
-					{selectedOption === '공지사항' && <Announcement />}
-					{selectedOption === '커뮤니티' && <Coummunity />}
+					{selectedOption === '상세정보' && (
+						<DetailContent Content={detailData?.content} />
+					)}
+					{selectedOption === '공지사항' && (
+						<Announcement Data={announcementData} />
+					)}
+					{selectedOption === '커뮤니티' && <Coummunity Data={communityData} />}
 				</Detail_Left>
 
 				<Detail_Right>
-					<Right_Category>카테고리이름</Right_Category>
+					<Right_Category>{detailData?.categoryName}</Right_Category>
 
 					<Right_Provider />
 
-					<Right_Title>
-						규현 (KYUHYUN) 정규 앨범 [COLORS] (Photo Book Ver.)
-					</Right_Title>
-					<Right_SubTitle>
-						규현 (KYUHYUN)의 첫 정규 앨범 COLORS는 이름 그대로 규현
-						(KYUHYUN)이라는 매개를 통해 유일무이한 색채를 덧입은 음악 컬렉션을
-						뜻한다. 규현 (KYUHYUN)의 시그니처인 서정적인 발라드 트랙은 물론, 팝,
-						댄스, 뮤지컬 넘버가 연상되는 클래식한 대곡 스타일까지 선보이며 또 한
-						번 확장된 스펙트럼을 확인하게 함에 이어 규현 (KYUHYUN)의 목소리로
-						고유의 색을 입은 트랙들은 눈앞에 프리즘이 펼쳐지는 듯, 생동감 있게
-						완성됐다.
-					</Right_SubTitle>
+					<Right_Title>{detailData?.title}</Right_Title>
+					<Right_SubTitle>{detailData?.description}</Right_SubTitle>
 
-					<Right_Participants>573명 참여</Right_Participants>
+					<Right_Participants>
+						{detailData?.participateCount}명 참여
+					</Right_Participants>
 
 					<Right_MoneyGoal>
-						230,355,000원 달성 (목표금액 : 30,000,000)
+						{detailData?.fundingAmount}원 달성 (목표금액 :{' '}
+						{detailData?.targetAmount}원)
 					</Right_MoneyGoal>
 
 					<Right_Price_Layout>
-						<Right_Price>320,000 만원</Right_Price>
-						<Right_Count>(재고 30개)</Right_Count>
+						<Right_Price>{detailData?.productPrice} 만원</Right_Price>
+						<Right_Count>(재고 {detailData?.productQuantity}개)</Right_Count>
 					</Right_Price_Layout>
 
 					<Right_Provider />

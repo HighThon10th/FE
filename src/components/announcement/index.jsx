@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 
-const Announcement = () => {
+const Announcement = ({ Data }) => {
 	return (
 		<Announcement_Container>
 			<Announcement_Title placeholder='제목을 작성하세요.' />
@@ -10,41 +11,31 @@ const Announcement = () => {
 			</Announcement_ButtonLayout>
 
 			<Announcement_Contents>
-				<Announcement_Content>
-					<Content_Info>
-						<Content_Name>이름이름이름</Content_Name>
-						<Content_Tag>판매자</Content_Tag>
-					</Content_Info>
+				{Data.map((item) => {
+					return (
+						<Announcement_Content key={item?.noticeId}>
+							<Content_Info>
+								<Content_Name>{item?.creatorName}</Content_Name>
+								<Content_Tag>판매자</Content_Tag>
+							</Content_Info>
 
-					<Content_Date>2025.02.16</Content_Date>
+							<Content_Date>{item?.createTime}</Content_Date>
 
-					<Content_Title>진짜 긴급 공지</Content_Title>
+							<Content_Title>{item?.title}</Content_Title>
 
-					<Content_SubTitle>
-						내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-					</Content_SubTitle>
+							<Content_SubTitle>{item?.content}</Content_SubTitle>
 
-					<Content_Provider />
-				</Announcement_Content>
-				<Announcement_Content>
-					<Content_Info>
-						<Content_Name>이름이름이름</Content_Name>
-						<Content_Tag>판매자</Content_Tag>
-					</Content_Info>
-
-					<Content_Date>2025.02.16</Content_Date>
-
-					<Content_Title>진짜 긴급 공지</Content_Title>
-
-					<Content_SubTitle>
-						내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-					</Content_SubTitle>
-
-					<Content_Provider />
-				</Announcement_Content>
+							<Content_Provider />
+						</Announcement_Content>
+					);
+				})}
 			</Announcement_Contents>
 		</Announcement_Container>
 	);
+};
+
+Announcement.propTypes = {
+	Data: PropTypes.node.isRequired,
 };
 
 const Announcement_Container = styled.div`
@@ -94,11 +85,11 @@ const Announcement_Button = styled.button`
 `;
 
 const Announcement_Contents = styled.div`
-
+  width: 100%;
 `;
 
 const Announcement_Content = styled.div`
-
+  width: 100%;
 `;
 
 const Content_Info = styled.div`
