@@ -1,14 +1,11 @@
 import styled from '@emotion/styled';
-import Test from '../../assets/test.jpg';
 
-const HomeContent = () => {
+const HomeContent = ({ ImgUrl, Rate, Title, onClick }) => {
 	return (
-		<Home_Content>
-			<Content_Img src={Test} />
-			<Content_Rate>64,000% 달성</Content_Rate>
-			<Content_Title>
-				규현 (KYUHYUN) 정규 앨범 [COLORS] (Color Swatch Book ver.)
-			</Content_Title>
+		<Home_Content onClick={onClick}>
+			<Content_Img src={ImgUrl} />
+			<Content_Rate>{Number(Rate).toFixed(3)}</Content_Rate>
+			<Content_Title>{Title}</Content_Title>
 		</Home_Content>
 	);
 };
@@ -38,5 +35,14 @@ const Content_Title = styled.div`
   font-size: 16px;
   font-weight: 400;
 `;
+
+import PropTypes from 'prop-types';
+
+HomeContent.propTypes = {
+	ImgUrl: PropTypes.string,
+	Rate: PropTypes.string.isRequired,
+	Title: PropTypes.string.isRequired,
+	onClick: PropTypes.func.isRequired,
+};
 
 export default HomeContent;

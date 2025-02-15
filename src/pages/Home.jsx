@@ -1,88 +1,115 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Header from '../components/header';
 import SearchBar from '../components/searchbar';
 import Category from '../components/category';
 import HomeContent from '../components/home_content';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-	const [selectedOption, setSelectedOption] = useState('최신순');
+	const [selectedOption, setSelectedOption] = useState('LATEST');
+	const [categoryData, setCategoryData] = useState([]);
+	const [contentData, setContentData] = useState([]);
+	const navigation = useNavigate();
 
 	const handleSelect = (option) => {
 		setSelectedOption(option);
 	};
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				await axios
+					.get('https://back.highthon10.kro.kr/category')
+					.then((res) => {
+						setCategoryData(res.data);
+					});
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				await axios
+					.get(
+						`https://back.highthon10.kro.kr/funding/search?page=0&size=20&searchType=${selectedOption}`,
+						{
+							headers: {
+								Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+							},
+						}
+					)
+					.then((res) => {
+						setContentData(res.data.funding);
+						console.log(res.data.funding);
+					});
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		fetchData();
+	}, [selectedOption]);
 
 	return (
 		<Container>
 			<Header />
 			<SearchBar />
 			<Home_Category>
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
-				<Category />
+				{categoryData.map((data) => (
+					<Category
+						key={data.categoryId}
+						imgUrl={data.categoryImgUrl}
+						Text={data.name}
+					/>
+				))}
 			</Home_Category>
 
 			<Home_Provider />
 
 			<Home_Selecter>
 				<Selecter_Option
-					className={selectedOption === '최신순' ? 'selected' : ''}
-					onClick={() => handleSelect('최신순')}
+					className={selectedOption === 'LATEST' ? 'selected' : ''}
+					onClick={() => handleSelect('LATEST')}
 				>
 					최신순
 				</Selecter_Option>
 				<Selecter_Option
-					className={selectedOption === '오래된순' ? 'selected' : ''}
-					onClick={() => handleSelect('오래된순')}
+					className={selectedOption === 'OLD' ? 'selected' : ''}
+					onClick={() => handleSelect('OLD')}
 				>
 					오래된순
 				</Selecter_Option>
 				<Selecter_Option
-					className={selectedOption === '좋아요순' ? 'selected' : ''}
-					onClick={() => handleSelect('좋아요순')}
+					className={selectedOption === 'POPULAR' ? 'selected' : ''}
+					onClick={() => handleSelect('POPULAR')}
 				>
 					좋아요순
 				</Selecter_Option>
 				<Selecter_Option
-					className={selectedOption === '달성순' ? 'selected' : ''}
-					onClick={() => handleSelect('달성순')}
+					className={selectedOption === 'ACHIEVEMENT' ? 'selected' : ''}
+					onClick={() => handleSelect('ACHIEVEMENT')}
 				>
 					달성순
 				</Selecter_Option>
 			</Home_Selecter>
 
 			<Home_Content>
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
-				<HomeContent />
+				{contentData.map((data) => (
+					<HomeContent
+						key={data.fundingId}
+						Rate={data.achievementPercentage}
+						ImgUrl={data.thumbnailImgUrl}
+						Title={data.title}
+						onClick={() => {
+							navigation(`/detail/${data.fundingId}`);
+						}}
+					/>
+				))}
 			</Home_Content>
 		</Container>
 	);
@@ -100,7 +127,7 @@ const Container = styled.div`
 
 const Home_Category = styled.div`
 	width: 100%;
-	min-height: 100px;
+	min-height: 110px;
 	height: 100px;
 	display: flex;
 	align-items: start;

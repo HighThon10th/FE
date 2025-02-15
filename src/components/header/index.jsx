@@ -4,10 +4,14 @@ const Header = () => {
 	return (
 		<Header_Container>
 			<Header_Logo>Funorite</Header_Logo>
-			<Header_Register>
-				<div>로그인</div>
-				<div>회원가입</div>
-			</Header_Register>
+			{localStorage.getItem('accessToken') ? (
+				<div>펀딩 시작하기</div>
+			) : (
+				<Header_Register>
+					<div>로그인</div>
+					<div>회원가입</div>
+				</Header_Register>
+			)}
 		</Header_Container>
 	);
 };
