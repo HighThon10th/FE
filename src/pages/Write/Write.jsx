@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 function Write() {
     const [title, setTitle] = useState("")
+    const [tag, setTag] = useState("")
     const [content, setContent] = useState("")
 
     useEffect(()=>{
@@ -14,6 +15,10 @@ function Write() {
 
     const onChangeContent = (contents) => {
         setContent(contents)
+    }
+
+    const onChangeTag = (tag) => {
+        setTag(tag)
     }
 
     const onChangeTitle = (title) => {
@@ -67,7 +72,10 @@ function Write() {
 
                     <InputTitle_Layout>
                         <InputTitle_Container>
-                            <InputTag_Input placeholder="# 태그를 입력하세요"/>
+                            <InputTag_Input
+                                placeholder="# 태그를 입력하세요"
+                                onChange={(e)=>onChangeTag(e.target.value)}
+                            />
                         </InputTitle_Container>
                     </InputTitle_Layout>
 
