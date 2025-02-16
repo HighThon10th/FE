@@ -11,17 +11,20 @@ const Header = () => {
 				Funorite
 			</Header_Logo>
 			{localStorage.getItem('accessToken') ? (
-				<div
-					onClick={() => {
-						window.location.href = '/write';
-					}}
-				>
-					펀딩 시작하기
-				</div>
-			) : (
 				<Header_Register>
-					<div>로그인</div>
-					<div>회원가입</div>
+					<div
+						onClick={() => {
+							window.location.href = '/write';
+						}}
+					>
+						펀딩 시작하기
+					</div>
+					<div><Header_Sign href='/business'>사업자등록</Header_Sign></div>
+				</Header_Register>
+					) : (
+				<Header_Register>
+					<div><Header_Sign href='/signin'>로그인</Header_Sign></div>
+					<div><Header_Sign href='/signup'>회원가입</Header_Sign></div>
 				</Header_Register>
 			)}
 		</Header_Container>
@@ -48,5 +51,10 @@ const Header_Register = styled.div`
 	align-items: center;
 	gap: 22px;
 `;
+
+const Header_Sign = styled.a`
+	color: black;
+	text-decoration-line: none;
+`
 
 export default Header;
