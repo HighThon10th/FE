@@ -22,6 +22,7 @@ const Category_Container = styled.div`
 const Category_Img = styled.img`
   width: 80px;
   height: 80px;
+  border-radius: 100%;
 `;
 
 const Category_Text = styled.div`

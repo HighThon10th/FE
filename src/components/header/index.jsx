@@ -3,9 +3,21 @@ import styled from '@emotion/styled';
 const Header = () => {
 	return (
 		<Header_Container>
-			<Header_Logo>Funorite</Header_Logo>
+			<Header_Logo
+				onClick={() => {
+					window.location.href = '/';
+				}}
+			>
+				Funorite
+			</Header_Logo>
 			{localStorage.getItem('accessToken') ? (
-				<div>펀딩 시작하기</div>
+				<div
+					onClick={() => {
+						window.location.href = '/write';
+					}}
+				>
+					펀딩 시작하기
+				</div>
 			) : (
 				<Header_Register>
 					<div>로그인</div>
