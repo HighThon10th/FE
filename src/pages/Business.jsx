@@ -6,9 +6,12 @@ const Business = () => {
     const [businessNum, setBusinessNum] = useState("")
 
     const onSubmit = async () => {
-        //await axios
+        await axios.patch(
+            'https://back.highthon10.kro.kr/user/apply-creator', 
+            {
+                "businessRegistrationNumber": businessNum
+            }).then(window.location.href= '/')
         // patch -> Home
-        window.location.href= '/'
     }
 
     return (
