@@ -5,6 +5,7 @@ import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Write from './pages/Write/Write';
 import Finishing from './pages/Write/Finishing';
+import Business from './pages/Business';
 
 function App() {
 	return (
@@ -14,6 +15,7 @@ function App() {
 			<Route path='/detail/:id' element={<Detail />} />
 			<Route path='/signin' element={<Signin/>}/>
 			<Route path='/signup' element={<Signup/>}/>
+			<Route path='/business' element={<Business/>}/>
 			<Route path='/write' element={<Write/>}/>
 			<Route path='/Write/finish' element={<Finishing/>}/>
 		</Routes>

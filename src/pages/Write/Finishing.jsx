@@ -9,7 +9,7 @@ function Finishing() {
 
     const [input, setInput] = useState({
         title: "",
-        content: "",
+        description: "",
         amount: null,
         date: null,
         category: ""
@@ -61,7 +61,7 @@ function Finishing() {
             <InputContent_Container>
                 <InputContent_Input
                     placeholder="설명글을 작성해주세요"
-                    name="content"
+                    name="description"
                     onChange={(e)=>onChangeInput(e)}
                 />
             </InputContent_Container>
