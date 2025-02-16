@@ -6,8 +6,9 @@ const Business = () => {
     const [businessNum, setBusinessNum] = useState("")
 
     const onSubmit = async () => {
-        await axios
+        //await axios
         // patch -> Home
+        window.location.href= '/'
     }
 
     return (
